@@ -6,10 +6,6 @@ from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 port_stem = PorterStemmer()
 vectorization = TfidfVectorizer()
-from PIL import Image
-
-nltk.data.path.append('./nltk_data')
-nltk.download('stopwords', download_dir='./nltk_data')
 
 vector_form = pickle.load(open('vector.pkl', 'rb'))
 load_model = pickle.load(open('model.pkl', 'rb'))
