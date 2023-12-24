@@ -8,6 +8,9 @@ port_stem = PorterStemmer()
 vectorization = TfidfVectorizer()
 from PIL import Image
 
+nltk.data.path.append('./nltk_data')
+nltk.download('stopwords', download_dir='./nltk_data')
+
 vector_form = pickle.load(open('D:\\university_files\\Semester_4\\Jupyter_Tasks\\pai_ccp\\vector.pkl', 'rb'))
 load_model = pickle.load(open('D:\\university_files\\Semester_4\\Jupyter_Tasks\\pai_ccp\\model.pkl', 'rb'))
 
