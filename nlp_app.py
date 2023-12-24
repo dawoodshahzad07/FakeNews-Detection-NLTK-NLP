@@ -7,8 +7,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 port_stem = PorterStemmer()
 vectorization = TfidfVectorizer()
 
-vector_form = pickle.load(open('vector.pkl', 'rb'))
-load_model = pickle.load(open('model.pkl', 'rb'))
+vector_form = pickle.load(open('/mount/src/fakenews-detection-nltk-nlp/vector.pkl', 'rb'))
+load_model = pickle.load(open('/mount/src/fakenews-detection-nltk-nlp/model.pkl', 'rb'))
 
 def stemming(content):
     con=re.sub('[^a-zA-Z]', ' ', content)
