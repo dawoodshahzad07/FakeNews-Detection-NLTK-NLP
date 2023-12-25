@@ -52,7 +52,8 @@ def main():
         """)
 
     # Input textarea
-    news = st.text_area("Enter the news content", height=200)
+    news_placeholder = st.empty()
+    news = news_placeholder.text_area("Enter the news content", height=200)
 
     # Prediction button
     if st.button("Predict"):
@@ -66,9 +67,13 @@ def main():
             else:
                 st.success("This news looks reliable :thumbs_up:")
 
+        # Clear the text area
+        news_placeholder.text_area("Enter the news content", value="")
+
     # Clear button
     if st.button("Clear"):
-        news = " "  # Clear the text area
+        # Clear the text area
+        news_placeholder.text_area("Enter the news content", value="")
 
     # Additional features
     st.markdown("---")
