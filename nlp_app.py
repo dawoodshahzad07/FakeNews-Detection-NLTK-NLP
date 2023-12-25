@@ -2,10 +2,12 @@ import streamlit as st
 import pickle
 import re
 import nltk
+
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
+
 port_stem = PorterStemmer()
 vectorization = TfidfVectorizer()
 
@@ -13,17 +15,17 @@ vector_form = pickle.load(open('/mount/src/fakenews-detection-nltk-nlp/vector.pk
 load_model = pickle.load(open('/mount/src/fakenews-detection-nltk-nlp/model.pkl', 'rb'))
 
 def stemming(content):
-    con=re.sub('[^a-zA-Z]', ' ', content)
-    con=con.lower()
-    con=con.split()
-    con=[port_stem.stem(word) for word in con if not word in stopwords.words('english')]
-    con=' '.join(con)
+    con = re.sub('[^a-zA-Z]', ' ', content)
+    con = con.lower()
+    con = con.split()
+    con = [port_stem.stem(word) for word in con if not word in stopwords.words('english')]
+    con = ' '.join(con)
     return con
 
 def fake_news(news):
-    news=stemming(news)
-    input_data=[news]
-    vector_form1=vector_form.transform(input_data)
+    news = stemming(news)
+    input_data = [news]
+    vector_form1 = vector_form.transform(input_data)
     prediction = load_model.predict(vector_form1)
     return prediction
 
@@ -49,20 +51,24 @@ def main():
             \nHamza Khalid
         """)
 
-    # Input textarea  
+    # Input textarea
     news = st.text_area("Enter the news content", height=200)
 
     # Prediction button
-    if st.button("Predict"):  
+    if st.button("Predict"):
         with st.spinner("Classifying..."):
             # Get prediction
-            fake = fake_news(news) 
+            fake = fake_news(news)
 
             # Display results
             if fake:
                 st.error("This news looks unreliable!! :warning:")
             else:
                 st.success("This news looks reliable :thumbs_up:")
+
+    # Clear button
+    if st.button("Clear"):
+        news = ""  # Clear the text area
 
     # Additional features
     st.markdown("---")
