@@ -1,5 +1,6 @@
+pickle
 nltk==3.6.5
 numpy==1.26.2
 scikit-learn==0.24.2
-nltk==3.6.5
 streamlit==1.29.0
+re
