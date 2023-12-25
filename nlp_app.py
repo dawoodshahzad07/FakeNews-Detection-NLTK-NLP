@@ -80,7 +80,7 @@ def main():
     st.subheader("Additional Features")
     st.write("""
         - Learning..
-        - https://github.com/dawoodshahzad07
+        - Recomend at my github..
     """)
 
     # Footer with GIF
