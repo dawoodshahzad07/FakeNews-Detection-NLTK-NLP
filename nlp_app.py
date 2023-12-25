@@ -68,7 +68,7 @@ def main():
 
     # Clear button
     if st.button("Clear"):
-        news = ""  # Clear the text area
+        news = " "  # Clear the text area
 
     # Additional features
     st.markdown("---")
