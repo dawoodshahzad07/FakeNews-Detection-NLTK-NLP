@@ -11,8 +11,8 @@ from PIL import Image
 nltk.download('stopwords')
 nltk.download('vader_lexicon')
 
-vector_form = pickle.load(open('D:\\university_files\\Semester_4\\Jupyter_Tasks\\pai_ccp\\vector.pkl', 'rb'))
-load_model = pickle.load(open('D:\\university_files\\Semester_4\\Jupyter_Tasks\\pai_ccp\\model.pkl', 'rb'))
+vector_form = pickle.load(open('https://github.com/dawoodshahzad07/FakeNews-Detection-NLTK-NLP/vector.pkl', 'rb'))
+load_model = pickle.load(open('https://github.com/dawoodshahzad07/FakeNews-Detection-NLTK-NLP/model.pkl', 'rb'))
 
 def stemming(content):
     con=re.sub('[^a-zA-Z]', ' ', content)
