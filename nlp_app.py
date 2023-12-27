@@ -2,24 +2,24 @@ import streamlit as st
 import pickle
 import re
 import nltk
-
-nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from PIL import Image
 
-port_stem = PorterStemmer()
-vectorization = TfidfVectorizer()
+nltk.download('stopwords')
+nltk.download('vader_lexicon')
 
-vector_form = pickle.load(open('/mount/src/fakenews-detection-nltk-nlp/vector.pkl', 'rb'))
-load_model = pickle.load(open('/mount/src/fakenews-detection-nltk-nlp/model.pkl', 'rb'))
+vector_form = pickle.load(open('D:\\university_files\\Semester_4\\Jupyter_Tasks\\pai_ccp\\vector.pkl', 'rb'))
+load_model = pickle.load(open('D:\\university_files\\Semester_4\\Jupyter_Tasks\\pai_ccp\\model.pkl', 'rb'))
 
 def stemming(content):
-    con = re.sub('[^a-zA-Z]', ' ', content)
-    con = con.lower()
-    con = con.split()
-    con = [port_stem.stem(word) for word in con if not word in stopwords.words('english')]
-    con = ' '.join(con)
+    con=re.sub('[^a-zA-Z]', ' ', content)
+    con=con.lower()
+    con=con.split()
+    con=[PorterStemmer().stem(word) for word in con if not word in stopwords.words('english')]
+    con=' '.join(con)
     return con
 
 def fake_news(news):
@@ -27,7 +27,12 @@ def fake_news(news):
     input_data = [news]
     vector_form1 = vector_form.transform(input_data)
     prediction = load_model.predict(vector_form1)
-    return prediction
+
+    # Sentiment Analysis
+    sentiment = SentimentIntensityAnalyzer()
+    compound_score = sentiment.polarity_scores(news)['compound']
+
+    return prediction, compound_score
 
 # Streamlit UI
 def main():
@@ -51,24 +56,20 @@ def main():
             \nHamza Khalid
         """)
 
-    # Input textarea
+    # Input textarea  
     news = st.text_area("Enter the news content", height=200)
 
     # Prediction button
-    if st.button("Predict"):
+    if st.button("Predict"):  
         with st.spinner("Classifying..."):
             # Get prediction
-            fake = fake_news(news)
+            fake, compound_score = fake_news(news) 
 
             # Display results
             if fake:
-                st.error("This news looks unreliable!! :warning:")
+                st.error(f"This news looks unreliable!! Sentiment: {get_sentiment_label(compound_score)}")
             else:
-                st.success("This news looks reliable :thumbs_up:")
-
-    # Clear button
-    if st.button("Clear"):
-        news = ""  # Clear the text area
+                st.success(f"This news looks reliable :thumbs_up: Sentiment: {get_sentiment_label(compound_score)}")
 
     # Additional features
     st.markdown("---")
@@ -82,6 +83,15 @@ def main():
     st.markdown("---")
     st.subheader("Powered by Streamlit :rocket:")
     st.image("https://i.pinimg.com/originals/62/26/43/6226435516042edfe1a4514a44e2023a.gif")
+
+# Function to get sentiment label
+def get_sentiment_label(compound_score):
+    if compound_score >= 0.05:
+        return "Positive"
+    elif compound_score <= -0.05:
+        return "Negative"
+    else:
+        return "Neutral"
 
 if __name__ == '__main__':
     main()
